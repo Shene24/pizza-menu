@@ -58,7 +58,6 @@ function App() {
 
 //we write function for creating new component
 function Header() {
-  // const styles = {};
   return (
     <header className="header">
       <h1>Fast React Pizza Co.</h1>
@@ -67,53 +66,35 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  const numPizzas = pizzas.length;
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <Pizza
-        name="Pizza Spinaci"
-        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
-        price={13}
-        photoName="pizzas/spinaci.jpg"
-      />
-      <Pizza
-        name="Pizza Funghi"
-        ingredients="Tomato, mozarella, mushrooms, and onion"
-        price={15}
-        photoName="pizzas/funghi.jpg"
-      />
-      <Pizza
-        name="Pizza Salamino"
-        ingredients="Tomato, mozarella, and pepperoni"
-        price={15}
-        photoName="pizzas/salamino.jpg"
-      />
-      <Pizza
-        name="Pizza Prosciutto"
-        ingredients="Tomato, mozarella, ham, aragula, and burrata cheese"
-        price={18}
-        photoName="pizzas/prosciutto.jpg"
-      />
-      <pizza
-        name="Pizza Margherita"
-        ingredients="Tomato and mozarella"
-        price={10}
-        photoName="pizzas/margherita.jpg"
-      />
+      {/* ternary operator, condition, second and third part */}
+      {numPizzas > 0 ? (
+        <ul className="pizzas">
+          {pizzaData.map((pizza) => (
+            <Pizza pizzaObj={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      ) : (
+        <p> Sorry, we're currently closed. </p>
+      )}
     </main>
   );
 }
 // to use props we need to pass it as an argument to the function
 function Pizza(props) {
   return (
-    <div className="pizza">
-      <img src={props.photoName} alt={props.name} />
+    <li className="pizza">
+      <img src={props.pizzaObj.photoName} alt={props.name} />
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients} </p>
-        <span>{props.price}</span>
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients} </p>
+        <span>{props.pizzaObj.price}</span>
       </div>
-    </div>
+    </li>
   );
 }
 function Footer() {
@@ -126,7 +107,16 @@ function Footer() {
   // else alert("We're currently closed!");
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()}. We're currently open!
+      {isOpen ? (
+        <div className="order">
+          <p>We're Open until {closeHour}:00 Come visit us or order online.</p>
+          <button className="btn">Order Now</button>
+        </div>
+      ) : (
+        <p>
+          We're happy to wekcome you between {openHour}:00 and {closeHour}:00.{" "}
+        </p>
+      )}
     </footer>
   );
 }
